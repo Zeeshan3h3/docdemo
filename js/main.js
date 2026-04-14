@@ -28,15 +28,19 @@ document.addEventListener('DOMContentLoaded', () => {
   // ---- Sticky Header Scroll Effect ----
   const header = document.getElementById('header');
   if (header) {
-    let lastScroll = 0;
+    let ticking = false;
     window.addEventListener('scroll', () => {
-      const currentScroll = window.scrollY;
-      if (currentScroll > 50) {
-        header.classList.add('scrolled');
-      } else {
-        header.classList.remove('scrolled');
+      if (!ticking) {
+        requestAnimationFrame(() => {
+          if (window.scrollY > 50) {
+            header.classList.add('scrolled');
+          } else {
+            header.classList.remove('scrolled');
+          }
+          ticking = false;
+        });
+        ticking = true;
       }
-      lastScroll = currentScroll;
     }, { passive: true });
   }
 
@@ -58,8 +62,9 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // ---- Appointment Form → WhatsApp Redirect ----
+  // Only bind if handleBooking() is NOT already defined (book.html uses its own handler)
   const appointmentForm = document.getElementById('appointmentForm');
-  if (appointmentForm) {
+  if (appointmentForm && typeof handleBooking === 'undefined') {
     // Set minimum date to today
     const dateInput = document.getElementById('preferredDate');
     if (dateInput) {
@@ -208,15 +213,21 @@ document.addEventListener('DOMContentLoaded', () => {
   faqItems.forEach(item => {
     const question = item.querySelector('.faq-question');
     if (question) {
+      question.setAttribute('aria-expanded', item.classList.contains('active'));
       question.addEventListener('click', () => {
         const isActive = item.classList.contains('active');
 
         // Close all other items
-        faqItems.forEach(other => other.classList.remove('active'));
+        faqItems.forEach(other => {
+          other.classList.remove('active');
+          const btn = other.querySelector('.faq-question');
+          if (btn) btn.setAttribute('aria-expanded', 'false');
+        });
 
         // Toggle current
         if (!isActive) {
           item.classList.add('active');
+          question.setAttribute('aria-expanded', 'true');
         }
       });
     }

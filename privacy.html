@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="view-transition" content="same-origin">
+    <title>Privacy Policy — Dr S.C. Santra Clinic, Kolkata</title>
+    <meta name="description"
+        content="Privacy Policy for Dr S.C. Santra Clinic, Picnic Garden, Kolkata. Covers data collection, usage, WhatsApp booking, and your rights under the DPDP Act 2023.">
+    <meta name="robots" content="noindex">
+    <link rel="icon" type="image/svg+xml"
+        href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚕️</text></svg>">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+    <!-- Emergency Banner (Redesign) -->
+    <div class="emergency-banner">
+        <div class="emergency-banner-inner">
+            <!-- LEFT: pulsing dot + emergency text -->
+            <div class="emergency-left">
+                <span class="pulse-dot"></span>
+                <span class="emergency-text">
+                    <strong>24/7 Emergency:</strong>
+                    <a href="tel:+917001999079" class="emergency-phone">
+                        +91 70019 99079
+                    </a>
+                    — Available anytime for emergencies
+                </span>
+            </div>
+
+            <!-- RIGHT: Call button + Open/Closed status -->
+            <div class="emergency-right">
+                <a href="tel:+917001999079" class="banner-call-btn">
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <path
+                            d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 13a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 9.91a16 16 0 0 0 6.18 6.18l1.97-1.97a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z" />
+                    </svg>
+                    Call Clinic
+                </a>
+                <!-- This div is populated by utils.js renderClinicStatus() -->
+                <div id="clinic-status"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Header -->
+    <header class="header" id="header">
+        <div class="container">
+            <nav class="nav">
+                <a href="index.html" class="nav-logo">
+                    <div class="nav-logo-icon">⚕️</div>
+                    <div class="nav-logo-text">
+                        <h4>Dr S.C. Santra</h4>
+                        <span>Gynecologist &amp; Obstetrician</span>
+                    </div>
+                </a>
+                <div class="nav-links" id="navLinks">
+                    <a href="index.html">Home</a>
+                    <a href="about.html">About</a>
+                    <a href="services.html">Services</a>
+                    <a href="timings.html">Timings</a>
+                    <a href="reviews.html">Reviews</a>
+                    <a href="contact.html">Contact</a>
+                    <a href="book.html" class="btn btn-primary btn-sm" style="margin-left:0.5rem;">Book Appointment</a>
+                </div>
+                <div class="nav-cta">
+                    <a href="tel:+917001999079" class="btn btn-call btn-sm">📞 Call</a>
+                    <a href="https://wa.me/917001999079?text=Hello%20Doctor%2C%20I%20would%20like%20to%20book%20an%20appointment."
+                        class="btn btn-whatsapp btn-sm" target="_blank">💬 WhatsApp</a>
+                    <div id="clinic-status"
+                        style="display:inline-flex;align-items:center;gap:6px;padding:4px 12px;border-radius:999px;font-size:12px;font-weight:600;border:1px solid transparent;white-space:nowrap;">
+                        ...</div>
+                    <button id="lang-toggle" onclick="toggleLanguage()" title="Toggle Bengali/English"
+                        style="padding:4px 12px;border:1px solid var(--gray-300);border-radius:999px;background:transparent;cursor:pointer;font-size:13px;font-weight:500;color:var(--gray-600);">বাং</button>
+                </div>
+                <button class="hamburger" id="hamburger" aria-label="Toggle menu">
+                    <span></span><span></span><span></span>
+                </button>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Page Header -->
+    <section class="page-header">
+        <div class="container">
+            <h1>Privacy Policy</h1>
+            <p>How we collect, use, and protect your information</p>
+            <div class="breadcrumb">
+                <a href="index.html">Home</a>
+                <span class="separator">›</span>
+                <span class="current">Privacy Policy</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Privacy Content -->
+    <section class="section">
+        <div class="container">
+            <div style="max-width:800px;margin:0 auto;" class="fade-in">
+                <p style="color:var(--gray-500);font-size:14px;margin-bottom:2rem;">Last updated: January 2026</p>
+
+                <div class="service-card" style="margin-bottom:1.5rem;">
+                    <h2 style="font-size:1.2rem;margin-bottom:0.75rem;">1. Information We Collect</h2>
+                    <p>When you use the appointment booking form on this website, we collect your name, phone number,
+                        preferred appointment date and time, and any health-related information you voluntarily share in
+                        the message field.</p>
+                </div>
+
+                <div class="service-card" style="margin-bottom:1.5rem;">
+                    <h2 style="font-size:1.2rem;margin-bottom:0.75rem;">2. How We Use Your Information</h2>
+                    <p>Your information is used solely to schedule and confirm your appointment with the clinic. It is
+                        shared via WhatsApp with clinic staff to process your booking. We do not sell, trade, or share
+                        your personal information with any third party for marketing purposes.</p>
+                </div>
+
+                <div class="service-card" style="margin-bottom:1.5rem;">
+                    <h2 style="font-size:1.2rem;margin-bottom:0.75rem;">3. Data Retention</h2>
+                    <p>Appointment booking data is retained only as long as necessary for the purpose of your
+                        consultation. Clinic records are maintained in accordance with applicable Indian medical
+                        regulations.</p>
+                </div>
+
+                <div class="service-card" style="margin-bottom:1.5rem;border-left:4px solid var(--primary);">
+                    <h2 style="font-size:1.2rem;margin-bottom:0.75rem;">4. Your Rights (DPDP Act 2023)</h2>
+                    <p>Under India's Digital Personal Data Protection Act 2023, you have the right to access your
+                        personal data, request correction of inaccurate data, and request deletion of your data. To
+                        exercise these rights, contact us at <a href="mailto:swapancoomar@yahoo.com"
+                            style="color:var(--primary);">swapancoomar@yahoo.com</a> or call <a href="tel:+917001999079"
+                            style="color:var(--primary);">+91 70019 99079</a>.</p>
+                </div>
+
+                <div class="service-card" style="margin-bottom:1.5rem;">
+                    <h2 style="font-size:1.2rem;margin-bottom:0.75rem;">5. WhatsApp Communication</h2>
+                    <p>When you click "Book via WhatsApp", your message is transmitted directly through WhatsApp's
+                        platform, subject to WhatsApp's own privacy policy. Please review <a
+                            href="https://www.whatsapp.com/legal/privacy-policy" target="_blank"
+                            style="color:var(--primary);">WhatsApp's Privacy Policy</a> for more information.</p>
+                </div>
+
+                <div class="service-card" style="margin-bottom:1.5rem;">
+                    <h2 style="font-size:1.2rem;margin-bottom:0.75rem;">6. Cookies &amp; Local Storage</h2>
+                    <p>This website uses only a minimal local storage preference to remember your language setting
+                        (English or Bengali). No tracking cookies or third-party advertising cookies are used.</p>
+                </div>
+
+                <div class="service-card" style="margin-bottom:2rem;">
+                    <h2 style="font-size:1.2rem;margin-bottom:0.75rem;">7. Contact</h2>
+                    <p>For any privacy concerns, contact:<br>
+                        <strong>Dr S.C. Santra Clinic</strong><br>
+                        147A, 1B, Picnic Garden Rd, Tiljala, Kolkata, West Bengal 700039<br>
+                        📧 <a href="mailto:swapancoomar@yahoo.com"
+                            style="color:var(--primary);">swapancoomar@yahoo.com</a><br>
+                        📞 <a href="tel:+917001999079" style="color:var(--primary);">+91 70019 99079</a>
+                    </p>
+                </div>
+
+                <div class="text-center">
+                    <a href="index.html" class="btn btn-outline">← Return to Home</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <div class="footer-logo">
+                        <div class="footer-logo-icon">⚕️</div>
+                        <h4>Dr S.C. Santra Clinic</h4>
+                    </div>
+                    <p>Providing compassionate and expert gynecological care in Kolkata for over 40 years.</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Quick Links</h4>
+                    <div class="footer-links">
+                        <a href="index.html">Home</a>
+                        <a href="about.html">About Doctor</a>
+                        <a href="services.html">Services</a>
+                        <a href="timings.html">Timings</a>
+                        <a href="reviews.html">Patient Reviews</a>
+                        <a href="book.html">Book Appointment</a>
+                        <a href="contact.html">Contact</a>
+                    </div>
+                </div>
+                <div class="footer-section">
+                    <h4>Contact</h4>
+                    <div class="footer-contact">
+                        <p>📞 <a href="tel:+917001999079">+91 70019 99079</a></p>
+                        <p>📞 <a href="tel:+919331018801">+91 93310 18801</a></p>
+                        <p>📧 <a href="mailto:swapancoomar@yahoo.com">swapancoomar@yahoo.com</a></p>
+                        <p>📍 147A, 1B, Picnic Garden Rd, Tiljala, Kolkata, West Bengal 700039</p>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>© 2026 Dr S.C. Santra Clinic. All rights reserved. &nbsp;·&nbsp; <a href="privacy.html"
+                        style="color:#9ca3af;font-size:12px;">Privacy Policy</a></p>
+                <p>Designed with ❤️ for better healthcare &nbsp;·&nbsp; <a href="https://biz-list.vercel.app/" target="_blank" rel="noopener" style="color:#9ca3af;font-size:12px;text-decoration:none;">Designed by <strong style="color:#60a5fa;">Bizlist</strong></a></p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Floating Buttons -->
+    <div class="floating-buttons">
+        <a href="https://wa.me/917001999079?text=Hello%20Doctor%2C%20I%20would%20like%20to%20book%20an%20appointment."
+            class="float-btn whatsapp" target="_blank" aria-label="Book on WhatsApp">💬<span class="tooltip">Book on
+                WhatsApp</span></a>
+        <a href="tel:+917001999079" class="float-btn call" aria-label="Call Clinic">📞<span class="tooltip">Call
+                Now</span></a>
+    </div>
+
+    <!-- Back to Top -->
+    <button id="back-to-top" aria-label="Back to top" onclick="window.scrollTo({top:0,behavior:'smooth'})"
+        style="display:none;position:fixed;bottom:90px;right:20px;width:42px;height:42px;border-radius:50%;background:#1B5AAF;color:#fff;border:none;cursor:pointer;font-size:18px;box-shadow:0 4px 12px rgba(0,0,0,0.15);z-index:999;align-items:center;justify-content:center;">↑</button>
+    <script>(function () { const btt = document.getElementById('back-to-top'); window.addEventListener('scroll', () => { btt.style.display = window.scrollY > 300 ? 'flex' : 'none'; }, { passive: true }); })();</script>
+
+    <script src="js/utils.js"></script>
+    <script src="js/lang-bn.js"></script>
+    <script src="js/main.js"></script>
+</body>
+
+</html>

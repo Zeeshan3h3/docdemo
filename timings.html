@@ -4,6 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="view-transition" content="same-origin">
     <title>Doctor Timings — Dr S.C. Santra Clinic, Kolkata</title>
     <meta name="description"
         content="Check the clinic timings and availability of Prof. (Dr.) S.C. Santra — Gynecologist in Picnic Garden, Kolkata. Morning and evening OPD hours.">
@@ -11,14 +12,55 @@
     <link rel="icon" type="image/svg+xml"
         href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚕️</text></svg>">
     <link rel="stylesheet" href="css/style.css">
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": ["MedicalClinic","LocalBusiness"],
+      "name": "Dr S.C. Santra Clinic",
+      "telephone": ["+917001999079","+919331018801","+919474896555"],
+      "email": "swapancoomar@yahoo.com",
+      "address": { "@type": "PostalAddress", "streetAddress": "147A, 1B, Picnic Garden Rd, Tiljala", "addressLocality": "Kolkata", "addressRegion": "West Bengal", "postalCode": "700039", "addressCountry": "IN" },
+      "openingHoursSpecification": [
+        { "@type": "OpeningHoursSpecification", "dayOfWeek": ["Monday","Tuesday","Thursday","Friday"], "opens": "09:00", "closes": "13:00" },
+        { "@type": "OpeningHoursSpecification", "dayOfWeek": ["Monday","Tuesday","Thursday","Friday"], "opens": "17:00", "closes": "21:00" },
+        { "@type": "OpeningHoursSpecification", "dayOfWeek": "Saturday", "opens": "10:00", "closes": "14:00" },
+        { "@type": "OpeningHoursSpecification", "dayOfWeek": "Saturday", "opens": "18:00", "closes": "21:00" }
+      ]
+    }
+    </script>
 </head>
 
 <body>
 
-    <!-- Emergency Banner -->
+    <!-- Emergency Banner (Redesign) -->
     <div class="emergency-banner">
-        <span>🚨</span> Emergency? Call now: <a href="tel:+917001999079">+91 70019 99079</a> — Available 24/7 for
-        emergencies
+        <div class="emergency-banner-inner">
+            <!-- LEFT: pulsing dot + emergency text -->
+            <div class="emergency-left">
+                <span class="pulse-dot"></span>
+                <span class="emergency-text">
+                    <strong>24/7 Emergency:</strong>
+                    <a href="tel:+917001999079" class="emergency-phone">
+                        +91 70019 99079
+                    </a>
+                    — Available anytime for emergencies
+                </span>
+            </div>
+
+            <!-- RIGHT: Call button + Open/Closed status -->
+            <div class="emergency-right">
+                <a href="tel:+917001999079" class="banner-call-btn">
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <path
+                            d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 13a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 9.91a16 16 0 0 0 6.18 6.18l1.97-1.97a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z" />
+                    </svg>
+                    Call Clinic
+                </a>
+                <!-- This div is populated by utils.js renderClinicStatus() -->
+                <div id="clinic-status"></div>
+            </div>
+        </div>
     </div>
 
     <!-- Header -->
@@ -42,9 +84,10 @@
                     <a href="book.html" class="btn btn-primary btn-sm" style="margin-left:0.5rem;">Book Appointment</a>
                 </div>
                 <div class="nav-cta">
-                    <a href="tel:+917001999079" class="btn btn-call btn-sm">📞 Call</a>
                     <a href="https://wa.me/917001999079?text=Hello%20Doctor%2C%20I%20would%20like%20to%20book%20an%20appointment."
-                        class="btn btn-whatsapp btn-sm" target="_blank">💬 WhatsApp</a>
+                        class="btn btn-whatsapp btn-sm" target="_blank" data-i18n="bookWhatsApp">💬 WhatsApp</a>
+                    <button id="lang-toggle" onclick="toggleLanguage()" title="Toggle Bengali/English"
+                        style="padding:4px 12px;border:1px solid var(--gray-300);border-radius:999px;background:transparent;cursor:pointer;font-size:13px;font-weight:500;color:var(--gray-600);">বাং</button>
                 </div>
                 <button class="hamburger" id="hamburger" aria-label="Toggle menu">
                     <span></span><span></span><span></span>
@@ -75,6 +118,27 @@
                 <p>Today's row is automatically highlighted for your convenience.</p>
             </div>
 
+            <!-- Live Status Banner (Upgrade 5) -->
+            <div id="timings-live-status"
+                style="margin-bottom:1.5rem;padding:14px 18px;border-radius:10px;font-size:14px;font-weight:500;"></div>
+            <script>
+                // Inline schedule for timings page status banner
+                (function () {
+                    var sched = { 0: [[8, 0, 12, 0], [18, 0, 22, 0]], 1: [[8, 0, 12, 0], [18, 0, 22, 0]], 2: [[8, 0, 12, 0], [18, 0, 22, 0]], 3: [[8, 0, 12, 0], [18, 0, 22, 0]], 4: [[8, 0, 12, 0], [18, 0, 22, 0]], 5: [[8, 0, 12, 0], [18, 0, 22, 0]], 6: [[8, 0, 12, 0], [18, 0, 22, 0]] };
+                    var now = new Date();
+                    var day = now.getDay();
+                    var cur = now.getHours() * 60 + now.getMinutes();
+                    var slots = sched[day];
+                    var open = false;
+                    if (slots) { for (var i = 0; i < slots.length; i++) { if (cur >= slots[i][0] * 60 + slots[i][1] && cur < slots[i][2] * 60 + slots[i][3]) { open = true; break; } } }
+                    var el = document.getElementById('timings-live-status');
+                    var dayNames = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+                    function nextOpen() { for (var j = 1; j <= 7; j++) { var d = (day + j) % 7; var s = sched[d]; if (s && s.length > 0) { var h = s[0][0]; var am = h < 12 ? 'AM' : 'PM'; var h12 = h > 12 ? h - 12 : (h === 0 ? 12 : h); return dayNames[d] + ' ' + h12 + ':' + (s[0][1] < 10 ? '0' : '') + s[0][1] + ' ' + am; } } return null; }
+                    if (open) { el.style.background = '#f0fdf4'; el.style.border = '1px solid #86efac'; el.style.color = '#166534'; el.innerHTML = '🟢 <strong>The clinic is open right now.</strong> Walk-ins welcome during OPD hours.'; }
+                    else { var nxt = nextOpen(); el.style.background = '#fef2f2'; el.style.border = '1px solid #fecaca'; el.style.color = '#991b1b'; el.innerHTML = '🔴 <strong>Clinic is currently closed.</strong> Next opening: ' + (nxt || 'soon') + '.'; }
+                })();
+            </script>
+
             <div class="timings-wrapper fade-in" style="max-width:800px;margin:0 auto;">
                 <table class="timings-table" id="timingsTable">
                     <thead>
@@ -82,45 +146,46 @@
                             <th>Day</th>
                             <th>🌅 Morning</th>
                             <th>🌆 Evening</th>
+                            <th>Status</th>
                         </tr>
                     </thead>
-                    <tbody>
-                        <tr data-day="1">
-                            <td>Monday</td>
-                            <td><span class="time-slot">🕘 9:00 AM – 1:00 PM</span></td>
-                            <td><span class="time-slot">🕔 5:00 PM – 9:00 PM</span></td>
-                        </tr>
-                        <tr data-day="2">
-                            <td>Tuesday</td>
-                            <td><span class="time-slot">🕘 9:00 AM – 1:00 PM</span></td>
-                            <td><span class="time-slot">🕔 5:00 PM – 9:00 PM</span></td>
-                        </tr>
-                        <tr data-day="3">
-                            <td>Wednesday</td>
-                            <td><span class="closed">❌ Closed</span></td>
-                            <td><span class="closed">❌ Closed</span></td>
-                        </tr>
-                        <tr data-day="4">
-                            <td>Thursday</td>
-                            <td><span class="time-slot">🕘 9:00 AM – 1:00 PM</span></td>
-                            <td><span class="time-slot">🕔 5:00 PM – 9:00 PM</span></td>
-                        </tr>
-                        <tr data-day="5">
-                            <td>Friday</td>
-                            <td><span class="time-slot">🕘 9:00 AM – 1:00 PM</span></td>
-                            <td><span class="time-slot">🕔 5:00 PM – 9:00 PM</span></td>
-                        </tr>
-                        <tr data-day="6">
-                            <td>Saturday</td>
-                            <td><span class="time-slot">🕙 10:00 AM – 2:00 PM</span></td>
-                            <td><span class="time-slot">🕕 6:00 PM – 9:00 PM</span></td>
-                        </tr>
-                        <tr data-day="0">
-                            <td>Sunday</td>
-                            <td><span class="emergency">🚨 Emergency Only</span></td>
-                            <td><span class="emergency">—</span></td>
-                        </tr>
-                    </tbody>
+                    <tbody id="timings-body">
+            <tr data-day="1">
+              <td>Monday</td>
+              <td><span class="time-slot">🕗 8:00 AM – 12:00 PM</span></td>
+              <td><span class="time-slot">🕕 6:00 PM – 10:00 PM</span></td>
+            </tr>
+            <tr data-day="2">
+              <td>Tuesday</td>
+              <td><span class="time-slot">🕗 8:00 AM – 12:00 PM</span></td>
+              <td><span class="time-slot">🕕 6:00 PM – 10:00 PM</span></td>
+            </tr>
+            <tr data-day="3">
+              <td>Wednesday</td>
+              <td><span class="time-slot">🕗 8:00 AM – 12:00 PM</span></td>
+              <td><span class="time-slot">🕕 6:00 PM – 10:00 PM</span></td>
+            </tr>
+            <tr data-day="4">
+              <td>Thursday</td>
+              <td><span class="time-slot">🕗 8:00 AM – 12:00 PM</span></td>
+              <td><span class="time-slot">🕕 6:00 PM – 10:00 PM</span></td>
+            </tr>
+            <tr data-day="5">
+              <td>Friday</td>
+              <td><span class="time-slot">🕗 8:00 AM – 12:00 PM</span></td>
+              <td><span class="time-slot">🕕 6:00 PM – 10:00 PM</span></td>
+            </tr>
+            <tr data-day="6">
+              <td>Saturday</td>
+              <td><span class="time-slot">🕗 8:00 AM – 12:00 PM</span></td>
+              <td><span class="time-slot">🕕 6:00 PM – 10:00 PM</span></td>
+            </tr>
+            <tr data-day="0">
+              <td>Sunday</td>
+              <td><span class="time-slot">🕗 8:00 AM – 12:00 PM</span></td>
+              <td><span class="time-slot">🕕 6:00 PM – 10:00 PM</span></td>
+            </tr>
+          </tbody>
                 </table>
             </div>
 
@@ -132,11 +197,21 @@
                         style="list-style:disc;padding-left:1.5rem;color:var(--gray-600);font-size:0.9rem;line-height:1.8;">
                         <li>Appointments are recommended to avoid long waiting times.</li>
                         <li>Walk-in patients are welcome during OPD hours.</li>
-                        <li>The clinic is closed on <strong>Wednesday</strong>.</li>
-                        <li>For emergencies on Sunday, please call <a href="tel:+917001999079"
-                                style="color:var(--primary);font-weight:600;">+91 70019 99079</a>.</li>
                         <li>Timings may change on public holidays — please call to confirm.</li>
                     </ul>
+                </div>
+
+                <div class="timing-note emergency-note fade-in">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round">
+                        <path
+                            d="M22 16.92v3a2 2 0 0 1-2.18 2A19.79 19.79 0 0 1 11.19 18.9 19.5 19.5 0 0 1 4.69 12a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" />
+                    </svg>
+                    <div>
+                        <strong>24/7 Emergency Available</strong>
+                        <p>Outside clinic hours? Call us anytime at <a href="tel:+917001999079">+91 70019 99079</a> for
+                            emergency gynecological care.</p>
+                    </div>
                 </div>
             </div>
 
@@ -168,7 +243,7 @@
                         <div class="footer-logo-icon">⚕️</div>
                         <h4>Dr S.C. Santra Clinic</h4>
                     </div>
-                    <p>Providing compassionate and expert gynecological care in Kolkata for over 30 years.</p>
+                    <p>Providing compassionate and expert gynecological care in Kolkata for over 40 years.</p>
                 </div>
                 <div class="footer-section">
                     <h4>Quick Links</h4>
@@ -188,13 +263,16 @@
                         <p>📞 <a href="tel:+917001999079">+91 70019 99079</a></p>
                         <p>📞 <a href="tel:+919331018801">+91 93310 18801</a></p>
                         <p>📧 <a href="mailto:swapancoomar@yahoo.com">swapancoomar@yahoo.com</a></p>
-                        <p>📍 6, Picnic Garden 3rd Lane, Kolkata - 700039</p>
+                        <p>📍 147A, 1B, Picnic Garden Rd, Tiljala, Kolkata, West Bengal 700039</p>
                     </div>
                 </div>
             </div>
+            
+
             <div class="footer-bottom">
-                <p>© 2026 Dr S.C. Santra Clinic. All rights reserved.</p>
-                <p>Designed with ❤️ for better healthcare</p>
+                <p>© 2026 Dr S.C. Santra Clinic. All rights reserved. &nbsp;·&nbsp; <a href="privacy.html"
+                        style="color:#9ca3af;font-size:12px;">Privacy Policy</a></p>
+                <p>Designed with ❤️ for better healthcare &nbsp;·&nbsp; <a href="https://biz-list.vercel.app/" target="_blank" rel="noopener" style="color:#9ca3af;font-size:12px;text-decoration:none;">Designed by <strong style="color:#60a5fa;">Bizlist</strong></a></p>
             </div>
         </div>
     </footer>
@@ -208,6 +286,13 @@
                 Now</span></a>
     </div>
 
+    <!-- Back to Top (Upgrade 10) -->
+    <button id="back-to-top" aria-label="Back to top" onclick="window.scrollTo({top:0,behavior:'smooth'})"
+        style="display:none;position:fixed;bottom:90px;right:20px;width:42px;height:42px;border-radius:50%;background:#1B5AAF;color:#fff;border:none;cursor:pointer;font-size:18px;box-shadow:0 4px 12px rgba(0,0,0,0.15);z-index:999;align-items:center;justify-content:center;">↑</button>
+    <script>(function () { const btt = document.getElementById('back-to-top'); window.addEventListener('scroll', () => { btt.style.display = window.scrollY > 300 ? 'flex' : 'none'; }, { passive: true }); })();</script>
+
+    <script src="js/utils.js"></script>
+    <script src="js/lang-bn.js"></script>
     <script src="js/main.js"></script>
 </body>
 

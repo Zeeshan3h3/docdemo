@@ -4,22 +4,60 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="view-transition" content="same-origin">
     <title>Contact & Location — Dr S.C. Santra Clinic, Picnic Garden, Kolkata</title>
     <meta name="description"
-        content="Contact Prof. (Dr.) S.C. Santra — Gynecologist at 6, Picnic Garden 3rd Lane, Kolkata 700039. Call +91 70019 99079 or WhatsApp for appointments. Get directions.">
+        content="Contact Prof. (Dr.) S.C. Santra — Gynecologist at 147A, 1B, Picnic Garden Rd, Kolkata 700039. Call +91 70019 99079 or WhatsApp for appointments. Get directions.">
     <meta name="keywords"
         content="Dr SC Santra clinic address, gynecologist near Picnic Garden, doctor contact Kolkata, directions to Dr Santra clinic">
     <link rel="icon" type="image/svg+xml"
         href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚕️</text></svg>">
     <link rel="stylesheet" href="css/style.css">
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": ["MedicalClinic","LocalBusiness"],
+      "name": "Dr S.C. Santra Clinic",
+      "telephone": ["+917001999079","+919331018801","+919474896555"],
+      "email": "swapancoomar@yahoo.com",
+      "address": { "@type": "PostalAddress", "streetAddress": "147A, 1B, Picnic Garden Rd, Tiljala", "addressLocality": "Kolkata", "addressRegion": "West Bengal", "postalCode": "700039", "addressCountry": "IN" },
+      "geo": { "@type": "GeoCoordinates", "latitude": 22.5354, "longitude": 88.3838 },
+      "aggregateRating": { "@type": "AggregateRating", "ratingValue": "5.0", "reviewCount": "3", "bestRating": "5" }
+    }
+    </script>
 </head>
 
 <body>
 
-    <!-- Emergency Banner -->
+    <!-- Emergency Banner (Redesign) -->
     <div class="emergency-banner">
-        <span>🚨</span> Emergency? Call now: <a href="tel:+917001999079">+91 70019 99079</a> — Available 24/7 for
-        emergencies
+        <div class="emergency-banner-inner">
+            <!-- LEFT: pulsing dot + emergency text -->
+            <div class="emergency-left">
+                <span class="pulse-dot"></span>
+                <span class="emergency-text">
+                    <strong>24/7 Emergency:</strong>
+                    <a href="tel:+917001999079" class="emergency-phone">
+                        +91 70019 99079
+                    </a>
+                    — Available anytime for emergencies
+                </span>
+            </div>
+
+            <!-- RIGHT: Call button + Open/Closed status -->
+            <div class="emergency-right">
+                <a href="tel:+917001999079" class="banner-call-btn">
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <path
+                            d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 13a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 9.91a16 16 0 0 0 6.18 6.18l1.97-1.97a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z" />
+                    </svg>
+                    Call Clinic
+                </a>
+                <!-- This div is populated by utils.js renderClinicStatus() -->
+                <div id="clinic-status"></div>
+            </div>
+        </div>
     </div>
 
     <!-- Header -->
@@ -43,9 +81,10 @@
                     <a href="book.html" class="btn btn-primary btn-sm" style="margin-left:0.5rem;">Book Appointment</a>
                 </div>
                 <div class="nav-cta">
-                    <a href="tel:+917001999079" class="btn btn-call btn-sm">📞 Call</a>
                     <a href="https://wa.me/917001999079?text=Hello%20Doctor%2C%20I%20would%20like%20to%20book%20an%20appointment."
-                        class="btn btn-whatsapp btn-sm" target="_blank">💬 WhatsApp</a>
+                        class="btn btn-whatsapp btn-sm" target="_blank" data-i18n="bookWhatsApp">💬 WhatsApp</a>
+                    <button id="lang-toggle" onclick="toggleLanguage()" title="Toggle Bengali/English"
+                        style="padding:4px 12px;border:1px solid var(--gray-300);border-radius:999px;background:transparent;cursor:pointer;font-size:13px;font-weight:500;color:var(--gray-600);">বাং</button>
                 </div>
                 <button class="hamburger" id="hamburger" aria-label="Toggle menu">
                     <span></span><span></span><span></span>
@@ -84,7 +123,7 @@
                             <div class="contact-icon">📍</div>
                             <div>
                                 <h4>Clinic Address</h4>
-                                <p>6, Picnic Garden 3rd Lane,<br>Kolkata - 700039,<br>West Bengal, India</p>
+                                <p>147A, 1B, Picnic Garden Rd,<br>Tiljala, Kolkata 700039,<br>West Bengal, India</p>
                             </div>
                         </div>
 
@@ -123,37 +162,63 @@
                             <div class="contact-icon">🕐</div>
                             <div>
                                 <h4>Working Hours</h4>
-                                <p>Mon-Tue, Thu-Fri: 9 AM – 1 PM, 5 PM – 9 PM<br>
-                                    Saturday: 10 AM – 2 PM, 6 PM – 9 PM<br>
-                                    Wednesday: Closed<br>
-                                    Sunday: Emergency Only</p>
+                                <p>Mon–Sun: 8 AM – 12 PM, 6 PM – 10 PM<br>
+                                    (Open all 7 days)</p>
                             </div>
                         </div>
                     </div>
 
                     <div style="display:flex;gap:1rem;flex-wrap:wrap;margin-top:1.5rem;" class="fade-in">
-                        <a href="https://www.google.com/maps/dir//6,+Picnic+Garden+3rd+Lane,+Kolkata+700039"
+                        <a href="https://www.google.com/maps/place/Cyber+Point/@22.5289484,88.3876756,21z/data=!4m6!3m5!1s0x3a0276b9f8d265f1:0x5fddfa31508e45bd!8m2!3d22.5290211!4d88.3877054"
                             class="btn btn-primary" target="_blank">📍 Get Directions</a>
                         <a href="https://wa.me/917001999079?text=Hello%20Doctor%2C%20I%20would%20like%20to%20book%20an%20appointment."
                             class="btn btn-whatsapp" target="_blank">💬 WhatsApp Us</a>
                     </div>
                 </div>
 
-                <!-- Google Maps -->
+                <!-- Google Maps (Upgrade 1) -->
                 <div class="fade-in">
+                    <!-- Landmark text -->
+                    <div
+                        style="background:#f0f9f4;border-left:4px solid #1B5AAF;padding:12px 16px;border-radius:0 8px 8px 0;margin-bottom:1rem;font-size:14px;color:#1a4a35;">
+                        <strong>📍 Landmarks:</strong>
+                        <ul style="margin:8px 0 8px 20px;padding:0;line-height:1.5;">
+                            <li>1 min walk from <strong>39 Bus Stop</strong> (beside Best Look Saloon, Picnic Garden Rd)
+                            </li>
+                            <li>Near <strong>Devi Enterprise</strong> &amp; <strong>Deshapran Prant Sweets</strong> (2,
+                                Picnic Garden 2nd Ln)</li>
+                        </ul>
+                        The clinic is located at <strong>147A, 1B, Picnic Garden Rd</strong>.
+                    </div>
+
                     <div class="map-wrapper">
-                        <iframe
-                            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3685.0!2d88.3838!3d22.5354!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMjLCsDMyJzA3LjQiTiA4OMKwMjMnMDEuNyJF!5e0!3m2!1sen!2sin!4v1234567890"
-                            width="100%" height="400" style="border:0;" allowfullscreen="" loading="lazy"
-                            referrerpolicy="no-referrer-when-downgrade"
-                            title="Dr S.C. Santra Clinic Location - Picnic Garden, Kolkata">
+                        <iframe src="https://maps.google.com/maps?q=22.5290211,88.3877054&z=18&output=embed"
+                            width="100%" height="400" style="border:0;display:block;border-radius:8px;"
+                            allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"
+                            title="Dr S.C. Santra Clinic — 147A, 1B, Picnic Garden Rd, Tiljala, Kolkata 700039">
                         </iframe>
                     </div>
 
-                    <!-- Clinic Photo -->
-                    <div class="clinic-photo fade-in" style="margin-top:1.5rem;">
+                    <!-- Direction buttons below map -->
+                    <div style="display:flex;gap:12px;margin-top:12px;flex-wrap:wrap;">
+                        <a href="https://www.google.com/maps/place/Cyber+Point/@22.5289484,88.3876756,21z/data=!4m6!3m5!1s0x3a0276b9f8d265f1:0x5fddfa31508e45bd!8m2!3d22.5290211!4d88.3877054"
+                            target="_blank"
+                            style="display:inline-flex;align-items:center;gap:8px;padding:10px 20px;background:#1a73e8;color:#fff;border-radius:8px;text-decoration:none;font-size:14px;">📍
+                            Get Directions</a>
+                        <a href="https://www.google.com/maps/place/Cyber+Point/@22.5289484,88.3876756,21z/data=!4m6!3m5!1s0x3a0276b9f8d265f1:0x5fddfa31508e45bd!8m2!3d22.5290211!4d88.3877054"
+                            target="_blank"
+                            style="display:inline-flex;align-items:center;gap:8px;padding:10px 20px;border:1px solid #ddd;border-radius:8px;text-decoration:none;font-size:14px;color:#333;background:#fff;">🗺️
+                            View on Google Maps</a>
+                    </div>
+
+                    <!-- Clinic Photos -->
+                    <div class="clinic-photos fade-in"
+                        style="margin-top:1.5rem; display: grid; gap: 1rem; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));">
                         <img src="images/clinic.jpg" alt="Dr S.C. Santra Clinic exterior, Picnic Garden, Kolkata"
-                            loading="lazy">
+                            loading="lazy"
+                            style="width: 100%; height: 260px; object-fit: cover; border-radius: 12px; border: 1px solid var(--gray-200);">
+                        <img src="images/locationinfo.jpeg" alt="Clinic Location Info" loading="lazy"
+                            style="width: 100%; height: 260px; object-fit: cover; border-radius: 12px; border: 1px solid var(--gray-200);">
                     </div>
                 </div>
             </div>
@@ -178,7 +243,7 @@
                         <div class="footer-logo-icon">⚕️</div>
                         <h4>Dr S.C. Santra Clinic</h4>
                     </div>
-                    <p>Providing compassionate and expert gynecological care in Kolkata for over 30 years.</p>
+                    <p>Providing compassionate and expert gynecological care in Kolkata for over 40 years.</p>
                 </div>
                 <div class="footer-section">
                     <h4>Quick Links</h4>
@@ -198,13 +263,16 @@
                         <p>📞 <a href="tel:+917001999079">+91 70019 99079</a></p>
                         <p>📞 <a href="tel:+919331018801">+91 93310 18801</a></p>
                         <p>📧 <a href="mailto:swapancoomar@yahoo.com">swapancoomar@yahoo.com</a></p>
-                        <p>📍 6, Picnic Garden 3rd Lane, Kolkata - 700039</p>
+                        <p>📍 147A, 1B, Picnic Garden Rd, Tiljala, Kolkata, West Bengal 700039</p>
                     </div>
                 </div>
             </div>
+
+
             <div class="footer-bottom">
-                <p>© 2026 Dr S.C. Santra Clinic. All rights reserved.</p>
-                <p>Designed with ❤️ for better healthcare</p>
+                <p>© 2026 Dr S.C. Santra Clinic. All rights reserved. &nbsp;·&nbsp; <a href="privacy.html"
+                        style="color:#9ca3af;font-size:12px;">Privacy Policy</a></p>
+                <p>Designed with ❤️ for better healthcare &nbsp;·&nbsp; <a href="https://biz-list.vercel.app/" target="_blank" rel="noopener" style="color:#9ca3af;font-size:12px;text-decoration:none;">Designed by <strong style="color:#60a5fa;">Bizlist</strong></a></p>
             </div>
         </div>
     </footer>
@@ -218,6 +286,13 @@
                 Now</span></a>
     </div>
 
+    <!-- Back to Top (Upgrade 10) -->
+    <button id="back-to-top" aria-label="Back to top" onclick="window.scrollTo({top:0,behavior:'smooth'})"
+        style="display:none;position:fixed;bottom:90px;right:20px;width:42px;height:42px;border-radius:50%;background:#1B5AAF;color:#fff;border:none;cursor:pointer;font-size:18px;box-shadow:0 4px 12px rgba(0,0,0,0.15);z-index:999;align-items:center;justify-content:center;">↑</button>
+    <script>(function () { const btt = document.getElementById('back-to-top'); window.addEventListener('scroll', () => { btt.style.display = window.scrollY > 300 ? 'flex' : 'none'; }, { passive: true }); })();</script>
+
+    <script src="js/utils.js"></script>
+    <script src="js/lang-bn.js"></script>
     <script src="js/main.js"></script>
 </body>
 

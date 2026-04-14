@@ -4,6 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="view-transition" content="same-origin">
     <title>Book Appointment — Dr S.C. Santra Clinic, Kolkata</title>
     <meta name="description"
         content="Book your appointment with Prof. (Dr.) S.C. Santra — Gynecologist in Kolkata. Easy online booking via WhatsApp. Call +91 70019 99079.">
@@ -12,14 +13,50 @@
     <link rel="icon" type="image/svg+xml"
         href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚕️</text></svg>">
     <link rel="stylesheet" href="css/style.css">
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": ["MedicalClinic","LocalBusiness"],
+      "name": "Dr S.C. Santra Clinic",
+      "telephone": ["+917001999079","+919331018801","+919474896555"],
+      "email": "swapancoomar@yahoo.com",
+      "address": { "@type": "PostalAddress", "streetAddress": "147A, 1B, Picnic Garden Rd, Tiljala", "addressLocality": "Kolkata", "addressRegion": "West Bengal", "postalCode": "700039", "addressCountry": "IN" },
+      "aggregateRating": { "@type": "AggregateRating", "ratingValue": "5.0", "reviewCount": "3", "bestRating": "5" }
+    }
+    </script>
 </head>
 
 <body>
 
-    <!-- Emergency Banner -->
+    <!-- Emergency Banner (Redesign) -->
     <div class="emergency-banner">
-        <span>🚨</span> Emergency? Call now: <a href="tel:+917001999079">+91 70019 99079</a> — Available 24/7 for
-        emergencies
+        <div class="emergency-banner-inner">
+            <!-- LEFT: pulsing dot + emergency text -->
+            <div class="emergency-left">
+                <span class="pulse-dot"></span>
+                <span class="emergency-text">
+                    <strong>24/7 Emergency:</strong>
+                    <a href="tel:+917001999079" class="emergency-phone">
+                        +91 70019 99079
+                    </a>
+                    — Available anytime for emergencies
+                </span>
+            </div>
+
+            <!-- RIGHT: Call button + Open/Closed status -->
+            <div class="emergency-right">
+                <a href="tel:+917001999079" class="banner-call-btn">
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <path
+                            d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 13a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 9.91a16 16 0 0 0 6.18 6.18l1.97-1.97a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z" />
+                    </svg>
+                    Call Clinic
+                </a>
+                <!-- This div is populated by utils.js renderClinicStatus() -->
+                <div id="clinic-status"></div>
+            </div>
+        </div>
     </div>
 
     <!-- Header -->
@@ -44,9 +81,10 @@
                         Appointment</a>
                 </div>
                 <div class="nav-cta">
-                    <a href="tel:+917001999079" class="btn btn-call btn-sm">📞 Call</a>
                     <a href="https://wa.me/917001999079?text=Hello%20Doctor%2C%20I%20would%20like%20to%20book%20an%20appointment."
-                        class="btn btn-whatsapp btn-sm" target="_blank">💬 WhatsApp</a>
+                        class="btn btn-whatsapp btn-sm" target="_blank" data-i18n="bookWhatsApp">💬 WhatsApp</a>
+                    <button id="lang-toggle" onclick="toggleLanguage()" title="Toggle Bengali/English"
+                        style="padding:4px 12px;border:1px solid var(--gray-300);border-radius:999px;background:transparent;cursor:pointer;font-size:13px;font-weight:500;color:var(--gray-600);">বাং</button>
                 </div>
                 <button class="hamburger" id="hamburger" aria-label="Toggle menu">
                     <span></span><span></span><span></span>
@@ -79,7 +117,7 @@
                         clinic.</p>
                 </div>
 
-                <form class="booking-form fade-in" id="appointmentForm">
+                <form class="booking-form fade-in" id="appointmentForm" onsubmit="return false;">
                     <div class="form-group">
                         <label for="patientName">Patient Name <span class="required">*</span></label>
                         <input type="text" id="patientName" name="patientName" placeholder="Enter your full name"
@@ -96,12 +134,20 @@
                         <div class="form-group">
                             <label for="preferredDate">Preferred Date <span class="required">*</span></label>
                             <input type="date" id="preferredDate" name="preferredDate" required>
+                            <!-- Saturday note -->
+                            <p id="saturday-note"
+                                style="display:none;font-size:12px;color:#b45309;margin-top:4px;background:#fffbeb;padding:6px 10px;border-radius:6px;border-left:3px solid #f59e0b;">
+                                ℹ️ All days: Morning 8 AM – 12 PM | Evening: 6 PM – 10 PM
+                            </p>
                         </div>
                         <div class="form-group">
                             <label for="preferredTime">Preferred Time <span class="required">*</span></label>
-                            <select id="preferredTime" name="preferredTime" required>
-                                <option value="">Select a time</option>
-                                <optgroup label="🌅 Morning">
+                            <select id="preferredTime" name="preferredTime" required
+                                style="width:100%;padding:10px 14px;border:1px solid #d1d5db;border-radius:8px;font-size:15px;background:#fff;color:#374151;">
+                                <option value="" disabled selected>Select a time</option>
+                                <optgroup label="🌅 Morning Session (8 AM – 12 PM)">
+                                    <option value="8:00 AM">8:00 AM</option>
+                                    <option value="8:30 AM">8:30 AM</option>
                                     <option value="9:00 AM">9:00 AM</option>
                                     <option value="9:30 AM">9:30 AM</option>
                                     <option value="10:00 AM">10:00 AM</option>
@@ -109,20 +155,46 @@
                                     <option value="11:00 AM">11:00 AM</option>
                                     <option value="11:30 AM">11:30 AM</option>
                                     <option value="12:00 PM">12:00 PM</option>
-                                    <option value="12:30 PM">12:30 PM</option>
                                 </optgroup>
-                                <optgroup label="🌆 Evening">
-                                    <option value="5:00 PM">5:00 PM</option>
-                                    <option value="5:30 PM">5:30 PM</option>
+                                <optgroup label="🌆 Evening Session (6 PM – 10 PM)">
                                     <option value="6:00 PM">6:00 PM</option>
                                     <option value="6:30 PM">6:30 PM</option>
                                     <option value="7:00 PM">7:00 PM</option>
                                     <option value="7:30 PM">7:30 PM</option>
                                     <option value="8:00 PM">8:00 PM</option>
                                     <option value="8:30 PM">8:30 PM</option>
+                                    <option value="9:00 PM">9:00 PM</option>
+                                    <option value="9:30 PM">9:30 PM</option>
                                 </optgroup>
                             </select>
                         </div>
+                    </div>
+
+                    <!-- Reason for Visit (Upgrade 3B) -->
+                    <div class="form-group">
+                        <label for="visit-reason">Reason for Visit <span class="required">*</span></label>
+                        <select id="visit-reason" name="visit-reason" required
+                            style="width:100%;padding:10px 14px;border:1px solid #d1d5db;border-radius:8px;font-size:15px;background:#fff;color:#374151;">
+                            <option value="" disabled selected>Select the type of appointment</option>
+                            <optgroup label="Pregnancy">
+                                <option value="pregnancy-checkup">Pregnancy checkup / Prenatal care</option>
+                                <option value="postnatal">Postnatal care</option>
+                                <option value="high-risk-pregnancy">High-risk pregnancy consultation</option>
+                            </optgroup>
+                            <optgroup label="Gynaecological Issues">
+                                <option value="pcos">PCOS treatment</option>
+                                <option value="menstrual-disorder">Menstrual disorder / Irregular periods</option>
+                                <option value="fertility">Fertility consultation</option>
+                                <option value="menopause">Menopause management</option>
+                            </optgroup>
+                            <optgroup label="General">
+                                <option value="health-checkup">Women's health checkup / Pap smear</option>
+                                <option value="ultrasound">Ultrasound / Scan</option>
+                                <option value="family-planning">Family planning / Contraception</option>
+                                <option value="surgery-consult">Surgical consultation</option>
+                                <option value="other">Other / General consultation</option>
+                            </optgroup>
+                        </select>
                     </div>
 
                     <div class="form-group">
@@ -131,9 +203,22 @@
                             placeholder="Briefly describe your concern (optional)"></textarea>
                     </div>
 
-                    <button type="submit" class="btn btn-whatsapp btn-lg" style="width:100%;justify-content:center;">
+                    <!-- Upgrade 3D: Button + Success message -->
+                    <button type="button" id="book-btn" onclick="handleBooking()" class="btn btn-whatsapp btn-lg"
+                        style="width:100%;justify-content:center;">
                         💬 Book via WhatsApp
                     </button>
+
+                    <div id="booking-success"
+                        style="display:none;text-align:center;padding:24px;background:#f0fdf4;border:1px solid #86efac;border-radius:12px;margin-top:16px;">
+                        <p style="font-size:32px;margin-bottom:8px;">✅</p>
+                        <p style="font-size:16px;font-weight:600;color:#166534;margin-bottom:6px;">Booking request sent!
+                        </p>
+                        <p style="font-size:14px;color:#4a7c59;">
+                            You'll be redirected to WhatsApp to confirm your appointment with the clinic.
+                            If WhatsApp doesn't open, call <a href="tel:+917001999079">+91 70019 99079</a>.
+                        </p>
+                    </div>
                 </form>
 
                 <!-- Alternative Contact -->
@@ -166,7 +251,7 @@
                         <div class="footer-logo-icon">⚕️</div>
                         <h4>Dr S.C. Santra Clinic</h4>
                     </div>
-                    <p>Providing compassionate and expert gynecological care in Kolkata for over 30 years.</p>
+                    <p>Providing compassionate and expert gynecological care in Kolkata for over 40 years.</p>
                 </div>
                 <div class="footer-section">
                     <h4>Quick Links</h4>
@@ -186,13 +271,16 @@
                         <p>📞 <a href="tel:+917001999079">+91 70019 99079</a></p>
                         <p>📞 <a href="tel:+919331018801">+91 93310 18801</a></p>
                         <p>📧 <a href="mailto:swapancoomar@yahoo.com">swapancoomar@yahoo.com</a></p>
-                        <p>📍 6, Picnic Garden 3rd Lane, Kolkata - 700039</p>
+                        <p>📍 147A, 1B, Picnic Garden Rd, Tiljala, Kolkata, West Bengal 700039</p>
                     </div>
                 </div>
             </div>
+            
+
             <div class="footer-bottom">
-                <p>© 2026 Dr S.C. Santra Clinic. All rights reserved.</p>
-                <p>Designed with ❤️ for better healthcare</p>
+                <p>© 2026 Dr S.C. Santra Clinic. All rights reserved. &nbsp;·&nbsp; <a href="privacy.html"
+                        style="color:#9ca3af;font-size:12px;">Privacy Policy</a></p>
+                <p>Designed with ❤️ for better healthcare &nbsp;·&nbsp; <a href="https://biz-list.vercel.app/" target="_blank" rel="noopener" style="color:#9ca3af;font-size:12px;text-decoration:none;">Designed by <strong style="color:#60a5fa;">Bizlist</strong></a></p>
             </div>
         </div>
     </footer>
@@ -206,6 +294,98 @@
                 Now</span></a>
     </div>
 
+    <!-- Back to Top (Upgrade 10) -->
+    <button id="back-to-top" aria-label="Back to top" onclick="window.scrollTo({top:0,behavior:'smooth'})"
+        style="display:none;position:fixed;bottom:90px;right:20px;width:42px;height:42px;border-radius:50%;background:#1B5AAF;color:#fff;border:none;cursor:pointer;font-size:18px;box-shadow:0 4px 12px rgba(0,0,0,0.15);z-index:999;align-items:center;justify-content:center;">↑</button>
+    <script>(function () { const btt = document.getElementById('back-to-top'); window.addEventListener('scroll', () => { btt.style.display = window.scrollY > 300 ? 'flex' : 'none'; }, { passive: true }); })();</script>
+
+    <!-- Booking Form JS: Date Validation + handleBooking (Upgrades 3A, 3D) -->
+    <script>
+        (function () {
+            const dateInput = document.getElementById('preferredDate');
+            if (dateInput) {
+                const today = new Date();
+                const yyyy = today.getFullYear();
+                const mm = String(today.getMonth() + 1).padStart(2, '0');
+                const dd = String(today.getDate()).padStart(2, '0');
+                dateInput.min = yyyy + '-' + mm + '-' + dd;
+
+                dateInput.addEventListener('change', function () {
+                    const selected = new Date(this.value);
+                    const day = selected.getUTCDay();
+                    const satNote = document.getElementById('saturday-note');
+                    if (satNote) satNote.style.display = day === 6 ? 'block' : 'none';
+                    if (day === 0) {
+                        showDateError('Sunday is for emergencies only. Please call +91 70019 99079.');
+                        this.value = '';
+                    } else if (day === 3) {
+                        showDateError('The clinic is closed on Wednesdays. Please choose another day.');
+                        this.value = '';
+                    } else {
+                        hideDateError();
+                    }
+                });
+            }
+
+            function showDateError(msg) {
+                let err = document.getElementById('date-error');
+                if (!err) {
+                    err = document.createElement('p');
+                    err.id = 'date-error';
+                    err.style.cssText = 'color:#dc2626;font-size:13px;margin-top:4px;padding:8px 12px;background:#fef2f2;border-radius:6px;border-left:3px solid #dc2626;';
+                    dateInput.parentNode.insertBefore(err, dateInput.nextSibling);
+                }
+                err.textContent = '⚠️ ' + msg;
+            }
+
+            function hideDateError() {
+                const err = document.getElementById('date-error');
+                if (err) err.remove();
+            }
+        })();
+
+        function handleBooking() {
+            const name = document.getElementById('patientName')?.value?.trim();
+            const phone = document.getElementById('patientPhone')?.value?.trim();
+            const date = document.getElementById('preferredDate')?.value;
+            const time = document.getElementById('preferredTime')?.value;
+            const reason = document.getElementById('visit-reason')?.value;
+            const msg = document.getElementById('patientMessage')?.value?.trim();
+
+            if (!name || !phone || !date || !time || !reason) {
+                alert('Please fill in all required fields before booking.');
+                return;
+            }
+            if (!/^\d{10}$/.test(phone)) {
+                alert('Please enter a valid 10-digit phone number.');
+                return;
+            }
+
+            const formattedDate = new Date(date).toLocaleDateString('en-IN', {
+                weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'
+            });
+
+            const whatsappMsg = encodeURIComponent(
+                'Hello Doctor, I would like to book an appointment.\n\n' +
+                '*Name:* ' + name + '\n' +
+                '*Phone:* ' + phone + '\n' +
+                '*Date:* ' + formattedDate + '\n' +
+                '*Time:* ' + time + '\n' +
+                '*Reason:* ' + reason +
+                (msg ? '\n*Message:* ' + msg : '')
+            );
+
+            document.getElementById('book-btn').style.display = 'none';
+            document.getElementById('booking-success').style.display = 'block';
+
+            setTimeout(() => {
+                window.open('https://wa.me/917001999079?text=' + whatsappMsg, '_blank');
+            }, 1500);
+        }
+    </script>
+
+    <script src="js/utils.js"></script>
+    <script src="js/lang-bn.js"></script>
     <script src="js/main.js"></script>
 </body>
 
