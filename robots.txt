@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+Disallow: /js/
+Sitemap: https://docdemo-chi.vercel.app/sitemap.xml
